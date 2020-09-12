@@ -1,0 +1,71 @@
+name: mpi_types_report_ci
+
+on: [push, pull_request]
+
+env:
+  BUILD_TYPE: Release
+  CC: mpicc
+  CXX: mpicxx
+
+jobs:
+  build_and_run:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Install MPI
+      run: sudo apt install libopenmpi-dev -y
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
+    - name: Build
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: cmake --build . --config $BUILD_TYPE
+
+    - name: Run example 01
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: /usr/bin/mpirun -n 4 --oversubscribe ./01_sending_primitive_objects
+      
+    - name: Run example 02
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: /usr/bin/mpirun -n 4 --oversubscribe ./02_sending_primitive_arrays
+
+    - name: Run example 03
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: /usr/bin/mpirun -n 4 --oversubscribe ./03_sending_raw_structs
+
+    - name: Run example 04
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: ./04_exploring_structs
+
+    - name: Run example 05
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: /usr/bin/mpirun -n 4 --oversubscribe ./05_sending_mpi_structs_incorrect
+
+    - name: Run example 06
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: /usr/bin/mpirun -n 2 --oversubscribe ./06_sending_mpi_structs_incorrect
+
+    - name: Run example 07
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: /usr/bin/mpirun -n 2 --oversubscribe ./07_sending_mpi_structs_correct
+
+    - name: Run example 08
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: /usr/bin/mpirun -n 4 --oversubscribe ./08_sending_mpi_structs_correct

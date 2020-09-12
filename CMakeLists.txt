@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.10)
+project(mpi_types_report C)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_COMPILER "/usr/bin/mpicc")
+set(CMAKE_CXX_COMPILER "/usr/bin/mpic++")
+
+find_package(MPI REQUIRED)
+include_directories(${MPI_C_INCLUDE_PATH})
+include_directories(${MPI_CXX_INCLUDE_PATH})
+
+add_executable(01_sending_primitive_objects 01_sending_primitive_objects.c)
+add_executable(02_sending_primitive_arrays 02_sending_primitive_arrays.c)
+add_executable(03_sending_raw_structs 03_sending_raw_structs.c)
+add_executable(04_exploring_structs 04_exploring_structs.c)
+add_executable(05_sending_mpi_structs_incorrect 05_sending_mpi_structs_incorrect.c)
+add_executable(06_sending_mpi_structs_incorrect 06_sending_mpi_structs_incorrect.c)
+add_executable(07_sending_mpi_structs_correct 07_sending_mpi_structs_correct.c)
+add_executable(08_sending_mpi_structs_correct 08_sending_mpi_structs_correct.c)
+add_executable(09_other_mpi_types 09_other_mpi_types.c)

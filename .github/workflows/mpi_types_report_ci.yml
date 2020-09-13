@@ -14,10 +14,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: Install MPI
-      run: sudo apt install libopenmpi-dev -y
+    - name: Update packages list
+      run: sudo apt update
+      
+    - name: Install packages
+      run: sudo apt install gcc-9 libopenmpi-dev -y
 
-    - name: Create Build Environment
+    - name: Create build environment
       run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure CMake
